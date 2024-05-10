@@ -1,7 +1,9 @@
 const fz = require('zigbee-herdsman-converters/converters/fromZigbee');
 const tz = require('zigbee-herdsman-converters/converters/toZigbee');
 const exposes = require('zigbee-herdsman-converters/lib/exposes');
+const reporting = require('zigbee-herdsman-converters/lib/reporting');
 const e = exposes.presets;
+const ea = exposes.access;
 
 const getKey = (object, value) => {
     for (const key in object) {
@@ -69,7 +71,7 @@ const tzLocal = {
     },
 };
 
-const device = {
+const definition = {
     zigbeeModel: ['DIYRuZ_FreePad_ext'],
     model: 'DIYRuZ_FreePad_ext',
     vendor: 'DIYRuZ',
@@ -78,7 +80,6 @@ const device = {
     toZigbee: [tzLocal.diyruz_freepad_on_off_config, tz.factory_reset],
     exposes: [e.battery(), e.action([
         'button_*_hold', 'button_*_single', 'button_*_double', 'button_*_triple', 'button_*_quadruple', 'button_*_release'])],
-    meta: {configureKey: 1},
     configure: async (device, coordinatorEndpoint, logger) => {
         const endpoint = device.getEndpoint(1);
         await bind(endpoint, coordinatorEndpoint, ['genPowerCfg']);
@@ -126,4 +127,4 @@ const device = {
     },
 };
 
-module.exports = device;
+module.exports = definition;
